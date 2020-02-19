@@ -52,16 +52,32 @@ window.addEventListener('DOMContentLoaded', function() {
         const menuItems = menu.querySelectorAll('ul>li');
 
         const handlerMenu = () => {
-            if ( !menu.style.transform || menu.style.transform === 'translate(-100%)' ) { // ?
-                menu.style.transform = 'translate(0)';                
-            } else {
-                menu.style.transform = 'translate(-100%)';
-            }
+            menu.classList.toggle('active-menu');
         };
 
         btnMenu.addEventListener('click', handlerMenu);
         closeBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+        menuItems.forEach( ( elem ) => elem.addEventListener( 'click', handlerMenu ) );
     };
     toggleMenu();
+
+    // popup
+
+    const togglePopUp = () => {
+        const popUp = document.querySelector('.popup');
+        const popUpBtn = document.querySelectorAll('.popup-btn');
+        const popUpClose = document.querySelector('.popup-close');
+        
+
+        popUpBtn.forEach( (elem) => {
+            elem.addEventListener('click', () => {
+                popUp.style.display = 'block';
+            });
+        });
+        
+        popUpClose.addEventListener('click', () => {
+            popUp.style.display = 'none';
+        });
+    };
+    togglePopUp();
 });
