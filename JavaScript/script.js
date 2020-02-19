@@ -1,6 +1,10 @@
 window.addEventListener('DOMContentLoaded', function() {
     'use strict';
-
+    /*var currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var day = currentDate.getDate() + 1;
+    var month = currentDate.getMonth();
+    var year = currentDate.getFullYear();*/
+    
     // Timer
     const countTimer = (deadline) => {
         let timerHours = document.querySelector('#timer-hours'),
@@ -21,18 +25,43 @@ window.addEventListener('DOMContentLoaded', function() {
         const updateClock = () => {
             let timer = getTimeRemaining();
 
-            timerHours.textContent = timer.hours;
-            timerMinutes.textContent = timer.minutes;
-            timerSeconds.textContent = timer.seconds;
+            timerHours.textContent = ( timer.hours < 10 ) ? '0' + timer.hours : timer.hours;
+            timerMinutes.textContent = ( timer.minutes < 10 ) ? '0' + timer.minutes : timer.minutes;
+            timerSeconds.textContent = ( timer.seconds < 10 ) ? '0' + timer.seconds : timer.seconds;
             
-            if (timer.timeRemaining > 0) {
-                setTimeout(updateClock, 1000);
+            if (timer.timeRemaining < 0) {
+                clearInterval();
+                timerHours.textContent = '00';
+                timerMinutes.textContent = '00';
+                timerSeconds.textContent = '00';
             }
         };
 
-        updateClock();
+        setInterval( updateClock, 1000 );
     };
     
     countTimer('20 february 2020');
-    //setInterval(countTimer, 1000, '20 february 2020');
+    //countTimer(day + ' ' + 'february' + ' ' + year);
+
+    // menu
+
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu');
+        const menu = document.querySelector('menu');
+        const closeBtn = document.querySelector('.close-btn');
+        const menuItems = menu.querySelectorAll('ul>li');
+
+        const handlerMenu = () => {
+            if ( !menu.style.transform || menu.style.transform === 'translate(-100%)' ) { // ?
+                menu.style.transform = 'translate(0)';                
+            } else {
+                menu.style.transform = 'translate(-100%)';
+            }
+        };
+
+        btnMenu.addEventListener('click', handlerMenu);
+        closeBtn.addEventListener('click', handlerMenu);
+        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+    };
+    toggleMenu();
 });
