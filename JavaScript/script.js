@@ -1,18 +1,25 @@
 window.addEventListener('DOMContentLoaded', function() {
     'use strict';
-    /*var currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-    var day = currentDate.getDate() + 1;
-    var month = currentDate.getMonth();
-    var year = currentDate.getFullYear();*/
-    
+
     // Timer
-    const countTimer = (deadline) => {
+    const countTimer = () => {
         let timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
         
+        const gettingTomorrow = () => {
+            let today = new Date();
+            today.setDate(today.getDate()+1);
+            let tomorrow = today.toLocaleString('en', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+            }); 
+            return tomorrow;
+        };
+        
         const getTimeRemaining = () => {
-            let dateStop = new Date(deadline).getTime();
+            let dateStop = new Date(gettingTomorrow()).getTime();
             let dateNow = new Date().getTime();
             let timeRemaining = ( dateStop - dateNow ) / 1000;
             let seconds = Math.floor( timeRemaining % 60 );
@@ -30,18 +37,17 @@ window.addEventListener('DOMContentLoaded', function() {
             timerSeconds.textContent = ( timer.seconds < 10 ) ? '0' + timer.seconds : timer.seconds;
             
             if (timer.timeRemaining < 0) {
-                clearInterval();
+                clearInterval(id);
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
             }
         };
 
-        setInterval( updateClock, 1000 );
+        let id = setInterval( updateClock, 1000 );
     };
     
-    countTimer('20 february 2020'); // Переделать
-    //countTimer(day + ' ' + 'february' + ' ' + year);
+    countTimer(); 
 
     // menu
 
