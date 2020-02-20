@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', function() {
         setInterval( updateClock, 1000 );
     };
     
-    countTimer('20 february 2020');
+    countTimer('20 february 2020'); // Переделать
     //countTimer(day + ' ' + 'february' + ' ' + year);
 
     // menu
@@ -57,9 +57,35 @@ window.addEventListener('DOMContentLoaded', function() {
 
         btnMenu.addEventListener('click', handlerMenu);
         closeBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach( ( elem ) => elem.addEventListener( 'click', handlerMenu ) );
+        menuItems.forEach( ( elem ) => elem.addEventListener( 'click', (event) =>{
+            event.preventDefault();
+            
+            const blockID = elem.children[0].getAttribute('href').substr(1); 
+
+            document.getElementById(blockID).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            handlerMenu();
+        }));
     };
     toggleMenu();
+    
+    // scroll button
+    const scrollAnimationButton = () => {
+        const scrollBtn = document.querySelector('a');
+        scrollBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            
+            const blockID = scrollBtn.getAttribute('href').substr(1);
+
+            document.getElementById(blockID).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    };
+    scrollAnimationButton();
 
     // popup
 
@@ -67,11 +93,26 @@ window.addEventListener('DOMContentLoaded', function() {
         const popUp = document.querySelector('.popup');
         const popUpBtn = document.querySelectorAll('.popup-btn');
         const popUpClose = document.querySelector('.popup-close');
+        const popUpContent = popUp.querySelector('.popup-content');
         
+        const popUpAnimation = () => { // Переделать
+            let count = 0;
+            popUpContent.style.left = '-10%';
+            let id = setInterval(()=>{
+                popUpContent.style.left = count + '%';
+                count++;
+                if(count === 41){
+                    clearInterval(id);
+                }
+            }, 10);
+        };
 
         popUpBtn.forEach( (elem) => {
             elem.addEventListener('click', () => {
                 popUp.style.display = 'block';
+                if (screen.width > 768) {
+                    popUpAnimation();
+                }
             });
         });
         
