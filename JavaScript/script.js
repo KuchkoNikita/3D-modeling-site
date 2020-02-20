@@ -50,7 +50,6 @@ window.addEventListener('DOMContentLoaded', function() {
     countTimer(); 
 
     // menu
-
     const toggleMenu = () => {
         const btnMenu = document.querySelector('.menu');
         const menu = document.querySelector('menu');
@@ -94,7 +93,6 @@ window.addEventListener('DOMContentLoaded', function() {
     scrollAnimationButton();
 
     // popup
-
     const togglePopUp = () => {
         const popUp = document.querySelector('.popup');
         const popUpBtn = document.querySelectorAll('.popup-btn');
@@ -104,16 +102,16 @@ window.addEventListener('DOMContentLoaded', function() {
         const popUpAnimation = () => { // Переделать
             let count = 0;
             popUpContent.style.left = '-10%';
-            let id = setInterval(()=>{
+            let id = setInterval( () => {
                 popUpContent.style.left = count + '%';
                 count++;
-                if(count === 41){
+                if (count === 41) {
                     clearInterval(id);
                 }
             }, 10);
         };
 
-        popUpBtn.forEach( (elem) => {
+        popUpBtn.forEach( ( elem ) => {
             elem.addEventListener('click', () => {
                 popUp.style.display = 'block';
                 if (screen.width > 768) {
@@ -127,4 +125,39 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     };
     togglePopUp();
+
+    //tabs
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header');
+        const tab = tabHeader.querySelectorAll('.service-header-tab');
+        const tabContent = document.querySelectorAll('.service-tab');
+
+        const toggleTabContent = (index) => {
+            for (let i = 0; i < tabContent.length; i++) {
+                if (index === i) {
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+        };
+
+        tabHeader.addEventListener('click', (event) => {
+            let target = event.target;
+            while (target !== tabHeader) {
+                if (target.classList.contains('service-header-tab')) {
+                    tab.forEach( ( item, i ) => {
+                        if (item === target) {
+                            toggleTabContent(i);
+                        }
+                    });
+                    return;
+                }
+                target = target.parentNode;
+            }
+        });
+    };
+    tabs();
 });
