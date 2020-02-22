@@ -51,35 +51,32 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // menu
     const toggleMenu = () => { // Переделать в одну функцию
-        const btnMenu = document.querySelector('.menu');
         const menu = document.querySelector('menu');
-        const closeBtn = document.querySelector('.close-btn');
-        const menuItems = menu.querySelectorAll('ul>li');
 
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
         };
 
-        btnMenu.addEventListener('click', handlerMenu);
-        menu.addEventListener('click', (event) => {
+        document.addEventListener('click', (event) => {
             let target = event.target;
-            if (target.classList.contains('close-btn')) {
+            if (target.closest('.menu')) {
+                handlerMenu();
+            } else if (target.classList.contains('close-btn')) {
+                handlerMenu();
+            } else if (menu.classList.value === 'active-menu' && target.tagName === 'A') {
+                event.preventDefault();
+                let blockID = target.getAttribute('href').substr(1);
+                document.getElementById(blockID).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                handlerMenu();
+            } else if (!target.classList.contains('active-menu') && menu.classList.value === 'active-menu') {
                 handlerMenu();
             }
         });
-        
-        menuItems.forEach( ( elem ) => elem.addEventListener( 'click', (event) =>{
-            event.preventDefault();
-            
-            const blockID = elem.children[0].getAttribute('href').substr(1); 
-
-            document.getElementById(blockID).scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            handlerMenu();
-        }));
     };
+
     toggleMenu();
     
     // scroll button
@@ -102,7 +99,6 @@ window.addEventListener('DOMContentLoaded', function() {
     const togglePopUp = () => {
         const popUp = document.querySelector('.popup');
         const popUpBtn = document.querySelectorAll('.popup-btn');
-        const popUpClose = document.querySelector('.popup-close');
         const popUpContent = popUp.querySelector('.popup-content');
         
         const popUpAnimation = () => { // Переделать
