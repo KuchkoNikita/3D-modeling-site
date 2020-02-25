@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', function() {
             return {timeRemaining, hours, minutes, seconds };
         };            
         
+        let id;
         const updateClock = () => {
             let timer = getTimeRemaining();
 
@@ -44,7 +45,7 @@ window.addEventListener('DOMContentLoaded', function() {
             }
         };
 
-        let id = setInterval( updateClock, 1000 );
+        id = setInterval( updateClock, 1000 );
     };
     
     countTimer(); 
@@ -173,7 +174,19 @@ window.addEventListener('DOMContentLoaded', function() {
     // slider
     const slider = () => {
         const slide = document.querySelectorAll('.portfolio-item');
-        const buttons = document.querySelectorAll('.portfolio-btn');
+        
+        const addDots = () => {
+            const portfolioDots = document.querySelector('.portfolio-dots');
+            for (let i = 0; i < slide.length; i++) {
+                if(i === 0){
+                    portfolioDots.insertAdjacentHTML('beforeEnd', `<li class="dot dot-active"></li>`);   
+                }else{
+                    portfolioDots.insertAdjacentHTML('beforeEnd', `<li class="dot"></li>`);   
+                }
+            }
+        };
+        addDots();
+        
         const dot = document.querySelectorAll('.dot');
         const slider = document.querySelector('.portfolio-content');
         let currentSlide = 0;
@@ -253,4 +266,82 @@ window.addEventListener('DOMContentLoaded', function() {
         startSlider(5000);
     };
     slider();
+
+    // Calculator
+    const calculatorBlock = (price = 100) => {
+        const calcSquare = document.querySelector('.calc-square');
+        const calcCount = document.querySelector('.calc-count');
+        const calcDay = document.querySelector('.calc-day');
+
+        const calcBlock = document.querySelector('.calc-block');
+        const calcType = document.querySelector('.calc-type');
+        const totalValue = document.getElementById('total');
+
+        const checkNumbers = (num) => {
+            num.value = num.value.replace(/[^\d]/g, '');
+        };
+        calcSquare.addEventListener('input', () => {
+            checkNumbers(calcSquare);
+        });
+        calcCount.addEventListener('input', () => {
+            checkNumbers(calcCount);
+        });
+        calcDay.addEventListener('input', () => {
+            checkNumbers(calcDay);
+        });
+
+        const countSum = () => {
+            let total = 0;
+            let countValue = 1;
+            let dayValue = 1;
+            const typeValue = calcType.options[calcType.selectedIndex].value;
+            const squareValue = Number(calcSquare.value);
+ 
+            if (calcCount.value > 1) {
+                countValue += ( calcCount.value - 1 ) / 10;
+            }
+            
+            if (calcDay.value && calcDay.value < 5) {
+                dayValue *= 2;
+            } else if (calcDay.value && calcDay.value < 10) {
+                dayValue *= 1.5;
+            }
+             
+            if (typeValue && squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            } 
+            totalValue.innerHTML = total;
+        };
+
+        calcBlock.addEventListener('change', (event) => {
+            const target = event.target;
+
+            if ( target.matches('select') || target.matches('input') ) {
+                countSum();
+            }
+        });
+    };
+    calculatorBlock();
+
+    // Command
+    const commandBlock = () => {
+        const row = document.querySelectorAll('.row')[8];
+        let secondImage;
+
+        row.addEventListener('mouseover', (event) => {
+            let target = event.target;
+            if(target.classList.contains('command__photo')) {
+                secondImage = target.src;
+                target.src = target.dataset.img;
+            }
+        });
+
+        row.addEventListener('mouseout', (event) => {
+            let target = event.target;
+            if(target.classList.contains('command__photo')) {
+                target.src = secondImage;
+            }
+        });
+    };
+    commandBlock();
 });
