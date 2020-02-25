@@ -38,14 +38,15 @@ window.addEventListener('DOMContentLoaded', function() {
             timerSeconds.textContent = ( timer.seconds < 10 ) ? '0' + timer.seconds : timer.seconds;
             
             if (timer.timeRemaining < 0) {
-                clearInterval(id);
+                cancelAnimationFrame(id);
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
+            } else {
+                requestAnimationFrame( updateClock );
             }
         };
-
-        id = setInterval( updateClock, 1000 );
+        id = requestAnimationFrame( updateClock );
     };
     
     countTimer(); 
@@ -104,14 +105,18 @@ window.addEventListener('DOMContentLoaded', function() {
         
         const popUpAnimation = () => { // Переделать
             let count = 0;
+            let id;
             popUpContent.style.left = '-10%';
-            let id = setInterval( () => {
+
+            const animationBlock = () => {
                 popUpContent.style.left = count + '%';
                 count++;
-                if (count === 41) {
-                    clearInterval(id);
+                if (count <= 41) {
+                    requestAnimationFrame( animationBlock );
                 }
-            }, 10);
+            };
+
+            id = requestAnimationFrame( animationBlock );
         };
 
         popUpBtn.forEach( ( elem ) => {
@@ -310,6 +315,7 @@ window.addEventListener('DOMContentLoaded', function() {
             if (typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
             } 
+            
             totalValue.innerHTML = total;
         };
 
