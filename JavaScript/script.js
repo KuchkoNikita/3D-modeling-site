@@ -295,6 +295,17 @@ window.addEventListener('DOMContentLoaded', function() {
             checkNumbers(calcDay);
         });
 
+        let countNumbers = 0;
+        const animationNumber = (total) => {
+            countNumbers += 100;
+            if (countNumbers <= total) {
+                totalValue.textContent = countNumbers;
+                requestAnimationFrame(animationNumber);
+            } else {
+                countNumbers = 0;
+            }
+        };
+
         const countSum = () => {
             let total = 0;
             let countValue = 1;
@@ -313,10 +324,11 @@ window.addEventListener('DOMContentLoaded', function() {
             }
              
             if (typeValue && squareValue) {
-                total = price * typeValue * squareValue * countValue * dayValue;
+                total = Math.round(price * typeValue * squareValue * countValue * dayValue);
+                requestAnimationFrame( () => {
+                    animationNumber(total);
+                });
             } 
-            
-            totalValue.innerHTML = total;
         };
 
         calcBlock.addEventListener('change', (event) => {
