@@ -270,7 +270,7 @@ window.addEventListener('DOMContentLoaded', function() {
         });
         startSlider(5000);
     };
-    slider();
+    slider(); 
 
     // Calculator
     const calculatorBlock = (price = 100) => {
@@ -294,7 +294,7 @@ window.addEventListener('DOMContentLoaded', function() {
         calcDay.addEventListener('input', () => {
             checkNumbers(calcDay);
         });
-
+        
         let countNumbers = 0;
         const animationNumber = (total) => {
             countNumbers += 100;
@@ -362,4 +362,104 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     };
     commandBlock();
+
+    // send-ajax-form
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так';
+        const loadMessage = 'Загрузка...';
+        const successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+        const form1 = document.getElementById('form1');
+        const form2 = document.getElementById('form2');
+        const form3 = document.getElementById('form3');
+
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem';
+        
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+
+            request.send(JSON.stringify(body));
+        };
+
+        // Header form
+        form1.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form1.appendChild(statusMessage);
+            
+            statusMessage.textContent = loadMessage;
+
+            const formData = new FormData(form1);
+            
+            let body = {};
+            formData.forEach( (val, key) => {
+                body[key] = val;
+            });
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        });
+
+        // Footer form
+        form2.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form2.appendChild(statusMessage);
+            
+            statusMessage.textContent = loadMessage;
+
+            const formData = new FormData(form2);
+            
+            let body = {};
+            formData.forEach( (val, key) => {
+                body[key] = val;
+            });
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        });
+
+        // Popup form
+        form3.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form3.appendChild(statusMessage);
+            
+            statusMessage.textContent = loadMessage;
+
+            const formData = new FormData(form3);
+            
+            let body = {};
+            formData.forEach( (val, key) => {
+                body[key] = val;
+            });
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        });
+    };
+    sendForm();
 });
