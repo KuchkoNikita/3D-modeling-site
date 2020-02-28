@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', function() {
     countTimer(); 
 
     // menu
-    const toggleMenu = () => { // Переделать в одну функцию
+    const toggleMenu = () => { 
         const menu = document.querySelector('menu');
 
         const handlerMenu = () => {
@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', function() {
             } else if (menu.classList.value === 'active-menu' && target.tagName === 'A') {
                 event.preventDefault();
                 let blockID = target.getAttribute('href').substr(1);
-                document.getElementById(blockID).scrollIntoView({
+                document.getElementById(blockID).scrollIntoView( {
                     behavior: 'smooth',
                     block: 'center'
                 });
@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', function() {
         const popUpBtn = document.querySelectorAll('.popup-btn');
         const popUpContent = popUp.querySelector('.popup-content');
         
-        const popUpAnimation = () => { // Переделать
+        const popUpAnimation = () => { 
             let count = 0;
             let id;
             popUpContent.style.left = '-10%';
@@ -395,6 +395,54 @@ window.addEventListener('DOMContentLoaded', function() {
             request.send(JSON.stringify(body));
         };
 
+        const checkOnlyText = (str) => {
+            str.value = str.value.replace(/[^а-яА-ЯёЁ ,\-]/g, '');
+        };
+        const checkPhone = (num) => {
+            num.value = num.value.replace(/^\+?[78]([-()]*\d){10}$/, '');
+        };
+
+        const clearInputsForm = (index) => {
+            const formName = document.querySelectorAll('.form-name');
+            const formEmail = document.querySelectorAll('.form-email');
+            const formPhone = document.querySelectorAll('.form-phone');
+
+            formName[index].value = '';
+            formEmail[index].value = '';
+            formPhone[index].value = '';
+            if (index === 1) { // Footer form
+                const formMessage = document.getElementById('form2-message');
+                formMessage.value = '';
+            }
+        };
+
+        const addEventListeners = () => {
+            const formName = document.querySelectorAll('.form-name');
+            const formPhone = document.querySelectorAll('.form-phone');
+
+            formName[0].addEventListener('input', () => {
+                checkOnlyText(formName[0]);
+            });
+            formName[1].addEventListener('input', () => {
+                checkOnlyText(formName[1]);
+            });
+            formName[2].addEventListener('input', () => {
+                checkOnlyText(formName[2]);
+            });
+
+            formPhone[0].addEventListener('input', () => {
+                checkPhone(formPhone[0]);
+            });
+            formPhone[1].addEventListener('input', () => {
+                checkPhone(formPhone[1]);
+            });
+            formPhone[2].addEventListener('input', () => {
+                checkPhone(formPhone[2]);
+            });
+
+        };
+        addEventListeners();
+
         // Header form
         form1.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -415,6 +463,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 statusMessage.textContent = errorMessage;
                 console.error(error);
             });
+
+            clearInputsForm(0);
         });
 
         // Footer form
@@ -437,6 +487,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 statusMessage.textContent = errorMessage;
                 console.error(error);
             });
+
+            clearInputsForm(1);
         });
 
         // Popup form
@@ -459,6 +511,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 statusMessage.textContent = errorMessage;
                 console.error(error);
             });
+
+            clearInputsForm(2);
         });
     };
     sendForm();
