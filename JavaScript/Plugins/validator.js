@@ -60,13 +60,21 @@ class Validator {
                     
                     if(statusMessage){
                         this.form.removeChild(statusMessage);
-                    }else{
+                    } else{
                         statusMessage = document.createElement('div');
                         statusMessage.style.cssText = 'font-size: 2rem';
                     }
 
                     this.form.appendChild(statusMessage);
-                    statusMessage.textContent = loadMessage;
+                    //statusMessage.textContent = loadMessage;  
+                    statusMessage.style.top = '200px';  
+                    statusMessage.innerHTML = `
+                    <div class="spinner">
+                        <div class="spinner-circle spinner-circle-outer"></div>
+                        <div class="spinner-circle-off spinner-circle-inner"></div>
+                        <div class="spinner-circle spinner-circle-single-1"></div>
+                        <div class="spinner-circle spinner-circle-single-2"></div>
+                    </div>`;
 
                     const formData = new FormData(this.form);
                     
@@ -131,36 +139,23 @@ class Validator {
     showError(elem) {
         elem.classList.remove('success');
         elem.classList.add('error');
-        if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')) {
-            return;
-        }
-        const errorDiv = document.createElement('div');
-        errorDiv.textContent = 'Ошибка в этом поле';
-        errorDiv.classList.add('validator-error');
-        elem.insertAdjacentElement('afterend', errorDiv);
     }
 
     showSuccess(elem) {
         elem.classList.remove('error');
         elem.classList.add('success');
-        if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')) {
-            elem.nextElementSibling.remove();
-        }
     }
 
     applyStyle() {
         const style = document.createElement('style');
         style.textContent = `
             input.success {
-                border: 2px solid green
+                outline: 0;
+                box-shadow: inset 0 3px 3px rgba(52,201,36), 0 0 15px rgba(52, 201, 36, .6);
             }
             input.error {
-                border: 2px solid red
-            }
-            .validator-error {
-                font-size: 14px;
-                font-family: sans-serif;
-                color: red;
+                outline: 0;
+                box-shadow: inset 0 3px 3px rgba(255,0,0), 0 0 15px rgba(255, 0, 0, .6);
             }
         `;
         document.head.appendChild(style);
