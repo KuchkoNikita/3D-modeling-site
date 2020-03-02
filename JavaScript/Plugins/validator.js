@@ -13,7 +13,6 @@ class Validator {
     init(){
         let statusMessage;
         const errorMessage = 'Что-то пошло не так';
-        const loadMessage = 'Загрузка...';
         const successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
         this.applyStyle();
@@ -27,46 +26,29 @@ class Validator {
             this.elementsForm.forEach(elem => {
                 this.checkIt({target: elem});
             });
-            if(this.error.size){
+            if (this.error.size){
                 return;
-            }else{
+            } else{
 
-                const postData = (body, outputData, errorData) => {
-                    const request = new XMLHttpRequest();
-                
-                    request.addEventListener('readystatechange', () => {
-                        if(request.readyState !== 4){
-                            return;
-                        }
-                        if(request.status === 200){
-                            outputData();
-                        }else{
-                            errorData(request.status);
-                        }
+                const postData = (body) => {
+                    return fetch('./server.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
                     });
-        
-                    request.open('POST', './server.php');
-                    request.setRequestHeader('Content-Type', 'application/json');
-                    request.send(JSON.stringify(body));
-        
                 };
 
                 const messagePost = () => {
-
-                    this.elementsForm.forEach(elem => {
-                        elem.value = '';
-                        elem.classList.remove('success');
-                    });
-                    
-                    if(statusMessage){
+                    if (statusMessage) {
                         this.form.removeChild(statusMessage);
-                    } else{
+                    } else {
                         statusMessage = document.createElement('div');
                         statusMessage.style.cssText = 'font-size: 2rem';
                     }
 
                     this.form.appendChild(statusMessage);
-                    //statusMessage.textContent = loadMessage;  
                     statusMessage.style.top = '200px';  
                     statusMessage.innerHTML = `
                     <div class="spinner">
@@ -78,18 +60,26 @@ class Validator {
 
                     const formData = new FormData(this.form);
                     
-                    let body ={};
-                    for(let val of formData.entries()){
+                    let body = {};
+                    for (let val of formData.entries()) {
                         body[val[0]] = val[1];
                     }
-            
-                    postData(body, () => {
-                        statusMessage.textContent = successMessage;
-                    }, (error) => {
-                        statusMessage.textContent = errorMessage;
-                        console.error(error);
-                    });
     
+                    postData(body)
+                        .then( (response) => {
+                            if( response.readyState !== 4 && response.status !== 200 ) {
+                                throw new Error('status network not 200');
+                            }
+                            statusMessage.textContent = successMessage;
+                        })
+                        .catch ( (error) => {
+                            statusMessage.textContent = errorMessage;
+                            console.error(error);
+                        });
+                    this.elementsForm.forEach(elem => {
+                        elem.value = '';
+                        elem.classList.remove('success');
+                    });
                 };
 
                 messagePost();
@@ -133,7 +123,6 @@ class Validator {
             this.showError(target);
             this.error.add(target);
         }
-        console.log(this.error);
     }
 
     showError(elem) {
