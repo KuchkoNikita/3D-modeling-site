@@ -65,7 +65,7 @@ const calculatorBlock = (price = 100) => {
         } 
     };
 
-    calcBlock.addEventListener('change', (event) => {
+    calcBlock.addEventListener('input', (event) => { // change
         const target = event.target;
 
         if ( target.matches('select') || target.matches('input') ) {
