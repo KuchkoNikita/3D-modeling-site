@@ -23,7 +23,8 @@ const calculatorBlock = (price = 100) => {
     let id;
     let countNumbers = 0;
     const animationNumber = (total) => {
-        countNumbers += 100;
+        const step = 100;
+        countNumbers += step;
         if (countNumbers <= total) {
             totalValue.textContent = countNumbers;
         } else {
@@ -39,6 +40,11 @@ const calculatorBlock = (price = 100) => {
         const typeValue = calcType.options[calcType.selectedIndex].value;
         const squareValue = Number(calcSquare.value);
 
+        if (calcSquare.value === '') {
+            total = 0;
+            totalValue.textContent = total;
+        }
+
         if (calcCount.value > 1) {
             countValue += ( calcCount.value - 1 ) / 10;
         }
@@ -51,9 +57,8 @@ const calculatorBlock = (price = 100) => {
          
         if (typeValue && squareValue) {
             total = Math.round(price * typeValue * squareValue * countValue * dayValue);
-            console.log('total: ', total);
             id = setInterval( () => {
-                animationNumber(total);
+                animationNumber(total, 100);
             }, 10);
         } else {
             total = 0;

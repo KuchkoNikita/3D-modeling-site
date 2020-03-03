@@ -70,6 +70,7 @@ class Validator {
                         })
                         .catch ( (error) => {
                             statusMessage.textContent = errorMessage;
+                            statusMessage.style.color = '#FFF';
                             console.error(error);
                         });
                     
@@ -104,7 +105,7 @@ class Validator {
                 return method.every( item => validatorMethod[ item[0] ]( elem, this.pattern[item[1]] ) );
             } 
         } else {
-            console.log('Необходимо передать id полей ввода и метод проверки этих полей для проверки валидатором');
+            console.error('Необходимо передать id полей ввода и метод проверки этих полей для проверки валидатором');
         }
 
         return true;
