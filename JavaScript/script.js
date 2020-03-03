@@ -295,6 +295,7 @@ window.addEventListener('DOMContentLoaded', function() {
             checkNumbers(calcDay);
         });
         
+        let id;
         let countNumbers = 0;
         const animationNumber = (total) => {
             countNumbers += 100;
@@ -317,17 +318,20 @@ window.addEventListener('DOMContentLoaded', function() {
                 countValue += ( calcCount.value - 1 ) / 10;
             }
             
-            if (calcDay.value && calcDay.value < 5) {
+            if (calcDay.value < 5 && calcDay.value) {
                 dayValue *= 2;
-            } else if (calcDay.value && calcDay.value < 10) {
+            } else if (calcDay.value < 10 && calcDay.value) {
                 dayValue *= 1.5;
             }
              
             if (typeValue && squareValue) {
                 total = Math.round(price * typeValue * squareValue * countValue * dayValue);
+                console.log('total: ', total);
                 requestAnimationFrame( () => {
                     animationNumber(total);
                 });
+            } else {
+                total = 0;
             } 
         };
 

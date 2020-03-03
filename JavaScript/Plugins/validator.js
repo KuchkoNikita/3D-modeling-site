@@ -26,6 +26,7 @@ class Validator {
             this.elementsForm.forEach(elem => {
                 this.checkIt({target: elem});
             });
+
             if (this.error.size){
                 return;
             } else{
@@ -34,9 +35,9 @@ class Validator {
                     return fetch('./server.php', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'multipart/form-data'
                         },
-                        body: JSON.stringify(body)
+                        body: body
                     });
                 };
 
@@ -60,12 +61,7 @@ class Validator {
 
                     const formData = new FormData(this.form);
                     
-                    let body = {};
-                    for (let val of formData.entries()) {
-                        body[val[0]] = val[1];
-                    }
-    
-                    postData(body)
+                    postData(formData)
                         .then( (response) => {
                             if( response.readyState !== 4 && response.status !== 200 ) {
                                 throw new Error('status network not 200');
@@ -76,6 +72,7 @@ class Validator {
                             statusMessage.textContent = errorMessage;
                             console.error(error);
                         });
+                    
                     this.elementsForm.forEach(elem => {
                         elem.value = '';
                         elem.classList.remove('success');
