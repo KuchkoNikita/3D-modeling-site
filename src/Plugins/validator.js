@@ -137,11 +137,11 @@ class Validator {
         style.textContent = `
             input.success {
                 outline: 0;
-                box-shadow: inset 0 3px 3px rgba(52,201,36), 0 0 15px rgba(52, 201, 36, .6);
+                box-shadow: inset 0 3px 3px rgba(139, 224, 160), 0 0 15px rgba(52, 201, 36, .6);
             }
             input.error {
                 outline: 0;
-                box-shadow: inset 0 3px 3px rgba(255,0,0), 0 0 15px rgba(255, 0, 0, .6);
+                box-shadow: inset 0 3px 3px rgba(222, 111, 111), 0 0 15px rgba(255, 0, 0, .6);
             }
         `;
         document.head.appendChild(style);
