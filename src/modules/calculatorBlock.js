@@ -22,6 +22,7 @@ const calculatorBlock = (price = 100) => {
     
     let id;
     let countNumbers = 0;
+    let total = 0;
     const animationNumber = (total) => {
         const step = 100;
         countNumbers += step;
@@ -35,7 +36,6 @@ const calculatorBlock = (price = 100) => {
     };
 
     const countSum = () => {
-        let total = 0;
         let countValue = 1;
         let dayValue = 1;
         const typeValue = calcType.options[calcType.selectedIndex].value;
@@ -71,6 +71,7 @@ const calculatorBlock = (price = 100) => {
 
         if ( target.matches('select') || target.matches('input') ) {
             clearInterval(id);
+            totalValue.textContent = total;
             countSum();
         }
     });
