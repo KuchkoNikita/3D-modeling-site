@@ -25,10 +25,18 @@ const calculatorBlock = (price = 100) => {
     const animationNumber = (total) => {
         const step = 100;
         countNumbers += step;
+        
+        calcSquare.disabled = true;
+        calcCount.disabled = true;
+        calcDay.disabled = true;
+
         if (countNumbers <= total) {
             totalValue.textContent = countNumbers;
         } else {
             countNumbers = 0;
+            calcSquare.disabled = false;
+            calcCount.disabled = false;
+            calcDay.disabled = false;
             clearInterval(id);
         }
     };
