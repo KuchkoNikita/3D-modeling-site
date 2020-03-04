@@ -25,18 +25,11 @@ const calculatorBlock = (price = 100) => {
     const animationNumber = (total) => {
         const step = 100;
         countNumbers += step;
-        
-        calcSquare.disabled = true;
-        calcCount.disabled = true;
-        calcDay.disabled = true;
 
         if (countNumbers <= total) {
             totalValue.textContent = countNumbers;
         } else {
             countNumbers = 0;
-            calcSquare.disabled = false;
-            calcCount.disabled = false;
-            calcDay.disabled = false;
             clearInterval(id);
         }
     };
@@ -66,17 +59,18 @@ const calculatorBlock = (price = 100) => {
         if (typeValue && squareValue) {
             total = Math.round(price * typeValue * squareValue * countValue * dayValue);
             id = setInterval( () => {
-                animationNumber(total, 100);
+                animationNumber(total);
             }, 10);
         } else {
             total = 0;
         } 
     };
 
-    calcBlock.addEventListener('input', (event) => { // change
+    calcBlock.addEventListener('change', (event) => { // change
         const target = event.target;
 
         if ( target.matches('select') || target.matches('input') ) {
+            clearInterval(id);
             countSum();
         }
     });
