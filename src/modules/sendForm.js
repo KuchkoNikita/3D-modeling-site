@@ -10,11 +10,64 @@ class Validator {
         this.error = new Set();
     }
 
-    init(){
+    displayMessage() {
         let statusMessage;
         const errorMessage = 'Что-то пошло не так';
         const successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
+        const postData = (body) => {
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                body: body
+            });
+        };
+
+        const messagePost = () => {
+            if (statusMessage) {
+                this.form.removeChild(statusMessage);
+            } else {
+                statusMessage = document.createElement('div');
+                statusMessage.style.cssText = 'font-size: 2rem';
+            }
+
+            this.form.appendChild(statusMessage);
+            statusMessage.style.top = '200px';  
+            statusMessage.innerHTML = `
+            <div class="spinner">
+                <div class="spinner-circle spinner-circle-outer"></div>
+                <div class="spinner-circle-off spinner-circle-inner"></div>
+                <div class="spinner-circle spinner-circle-single-1"></div>
+                <div class="spinner-circle spinner-circle-single-2"></div>
+            </div>`;
+
+            const formData = new FormData(this.form);
+            
+            postData(formData)
+                .then( (response) => {
+                    if( response.readyState !== 4 && response.status !== 200 ) {
+                        throw new Error('status network not 200');
+                    }
+                    statusMessage.textContent = successMessage;
+                })
+                .catch ( (error) => {
+                    statusMessage.textContent = errorMessage;
+                    statusMessage.style.color = '#FFF';
+                    console.error(error);
+                });
+            
+            this.elementsForm.forEach(elem => {
+                elem.value = '';
+                elem.classList.remove('success');
+            });
+        };
+
+        messagePost();
+    }
+
+    init(){
         this.applyStyle();
         this.setPattern();
         this.elementsForm.forEach((elem) => {
@@ -30,58 +83,7 @@ class Validator {
             if (this.error.size){
                 return;
             } else{
-
-                const postData = (body) => {
-                    return fetch('./server.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        },
-                        body: body
-                    });
-                };
-
-                const messagePost = () => {
-                    if (statusMessage) {
-                        this.form.removeChild(statusMessage);
-                    } else {
-                        statusMessage = document.createElement('div');
-                        statusMessage.style.cssText = 'font-size: 2rem';
-                    }
-
-                    this.form.appendChild(statusMessage);
-                    statusMessage.style.top = '200px';  
-                    statusMessage.innerHTML = `
-                    <div class="spinner">
-                        <div class="spinner-circle spinner-circle-outer"></div>
-                        <div class="spinner-circle-off spinner-circle-inner"></div>
-                        <div class="spinner-circle spinner-circle-single-1"></div>
-                        <div class="spinner-circle spinner-circle-single-2"></div>
-                    </div>`;
-
-                    const formData = new FormData(this.form);
-                    
-                    postData(formData)
-                        .then( (response) => {
-                            if( response.readyState !== 4 && response.status !== 200 ) {
-                                throw new Error('status network not 200');
-                            }
-                            statusMessage.textContent = successMessage;
-                        })
-                        .catch ( (error) => {
-                            statusMessage.textContent = errorMessage;
-                            statusMessage.style.color = '#FFF';
-                            console.error(error);
-                        });
-                    
-                    this.elementsForm.forEach(elem => {
-                        elem.value = '';
-                        elem.classList.remove('success');
-                    });
-                };
-
-                messagePost();
-   
+                this.displayMessage();
             }
         });
     }
