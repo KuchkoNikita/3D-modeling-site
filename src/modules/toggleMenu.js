@@ -1,3 +1,5 @@
+'use strict';
+
 const toggleMenu = () => { 
     const menu = document.querySelector('menu');
 

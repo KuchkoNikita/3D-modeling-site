@@ -1,3 +1,5 @@
+'use strict';
+
 const calculatorBlock = (price = 100) => {
     const calcSquare = document.querySelector('.calc-square');
     const calcCount = document.querySelector('.calc-count');

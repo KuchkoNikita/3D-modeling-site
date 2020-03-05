@@ -1,3 +1,5 @@
+'use strict';
+
 const scrollAnimationButton = () => {
     const scrollBtn = document.querySelector('a');
     scrollBtn.addEventListener('click', (event) => {

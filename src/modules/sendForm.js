@@ -1,3 +1,5 @@
+'use strict';
+
 class Validator {
     constructor({selector, pattern = {}, method}) {
         this.form = document.querySelector(selector);
@@ -118,7 +120,7 @@ class Validator {
 
         if (this.isValid(target)) {
             this.showSuccess(target);
-            this.error.delete(target)
+            this.error.delete(target);
         } else {
             this.showError(target);
             this.error.add(target);
@@ -152,7 +154,7 @@ class Validator {
 
     setPattern() {
         if (!this.pattern.phone) {
-            this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
+            this.pattern.phone = /^\+375( )?(( )?\d){9}$|^\+?[78]([-()]*\d){10}$/;
         }
         if (!this.pattern.email) {
             this.pattern.email = /^\w+[\w\.\d]+@\w+\.\w{2,}$/;
@@ -164,7 +166,8 @@ const sendForm = () => {
     const headerForm = new Validator({
         selector: '#form1',
         pattern: {
-            phone: /^\+375( )?(( )?\d){9}$/,
+            //phone: /^\+375( )?(( )?\d){9}$/,
+            phone: /^\+375( )?(( )?\d){9}$|^\+?[78]([-()]*\d){10}$/,
             name: /[а-яА-ЯёЁ]+/
         },
         method: {
@@ -187,7 +190,7 @@ const sendForm = () => {
     const footerForm = new Validator({
         selector: '#form2',
         pattern: {
-            phone: /^\+375( )?(( )?\d){9}$/,
+            phone: /^\+375( )?(( )?\d){9}$|^\+?[78]([-()]*\d){10}$/,
             name: /^[а-яА-ЯёЁ]+$/,
             message: /^[а-яА-ЯёЁ0-9 ]+$/
         },
@@ -215,7 +218,7 @@ const sendForm = () => {
     const popupForm = new Validator({
         selector: '#form3',
         pattern: {
-            phone: /^\+375( )?(( )?\d){9}$/,
+            phone: /^\+375( )?(( )?\d){9}$|^\+?[78]([-()]*\d){10}$/,
             name: /[а-яА-ЯёЁ]+/
         },
         method: {

@@ -1,3 +1,5 @@
+'use strict';
+
 const togglePopUp = () => {
     const popUp = document.querySelector('.popup');
     const popUpBtn = document.querySelectorAll('.popup-btn');

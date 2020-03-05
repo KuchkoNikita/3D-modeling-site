@@ -1,3 +1,5 @@
+'use strict';
+
 const commandBlock = () => {
     const row = document.querySelectorAll('.row')[8];
     let secondImage;
