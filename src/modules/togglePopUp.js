@@ -25,6 +25,8 @@ const togglePopUp = () => {
             popUp.style.display = 'block';
             if (screen.width > 768) {
                 popUpAnimation();
+            } else {
+                popUpContent.style.left = '38%';
             }
         });
     });
