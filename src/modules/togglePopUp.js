@@ -5,18 +5,17 @@ const togglePopUp = () => {
     
     const popUpAnimation = () => { 
         let count = 0;
-        let id;
-        popUpContent.style.left = '-10%';
+        popUpContent.style.left = '-30%';
 
         const animationBlock = () => {
             popUpContent.style.left = count + '%';
             count++;
-            if (count <= 41) {
+            if (count <= 38) {
                 requestAnimationFrame( animationBlock );
             }
         };
 
-        id = requestAnimationFrame( animationBlock );
+        requestAnimationFrame( animationBlock );
     };
 
     popUpBtn.forEach( ( elem ) => {

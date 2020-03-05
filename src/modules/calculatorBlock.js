@@ -66,11 +66,12 @@ const calculatorBlock = (price = 100) => {
         } 
     };
 
-    calcBlock.addEventListener('change', (event) => { // change
+    calcBlock.addEventListener('input', (event) => { // change
         const target = event.target;
 
         if ( target.matches('select') || target.matches('input') ) {
             clearInterval(id);
+            countNumbers = 0;
             totalValue.textContent = total;
             countSum();
         }
