@@ -19,6 +19,8 @@ import slider from './modules/slider';
 import calculatorBlock from './modules/calculatorBlock';
 import commandBlock from './modules/commandBlock';
 import sendForm from './modules/sendForm';
+import sliderCompaines from './modules/sliderCompaines';
+
 // Timer
 countTimer(); 
 
@@ -45,3 +47,6 @@ commandBlock();
 
 // send-ajax-form
 sendForm();
+
+//slider compaines
+sliderCompaines();
