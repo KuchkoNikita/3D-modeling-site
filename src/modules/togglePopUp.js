@@ -23,11 +23,9 @@ const togglePopUp = () => {
     popUpBtn.forEach( ( elem ) => {
         elem.addEventListener('click', () => {
             popUp.style.display = 'block';
-            if (screen.width > 768) {
+            if (document.body.clientWidth > 768) {
                 popUpAnimation();
-            } else {
-                popUpContent.style.left = '38%';
-            }
+            } 
         });
     });
     
